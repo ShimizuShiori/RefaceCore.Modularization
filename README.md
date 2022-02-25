@@ -22,6 +22,6 @@ It will scann all the modules when Application is starting .
 
 You could download this package from [Nuget](https://www.nuget.org/packages/RefaceCore.Modularization/) .
 
-## Examples
+---
 
-* [QuickStart](https://github.com/ShimizuShiori/RefaceCore.Modularization/tree/main/Examples/01%20-%20QuickStarter) - This example show how to start a application by **RefaceCore.Modularization** and it can register component into IOC-Container automatically . 
+More informations please see [wiki](https://github.com/ShimizuShiori/RefaceCore.Modularization/wiki)
