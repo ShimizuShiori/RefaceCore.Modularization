@@ -1,0 +1,212 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>RefaceCore.Modularization</name>
+    </assembly>
+    <members>
+        <member name="T:RefaceCore.Modularization.Attributes.OptionAttribute">
+            <summary>
+            为类型添加该特征，会自动注册成为 Options
+            </summary>
+        </member>
+        <member name="P:RefaceCore.Modularization.Attributes.OptionAttribute.Section">
+            <summary>
+            配置文件中的 Section 路径
+            </summary>
+        </member>
+        <member name="M:RefaceCore.Modularization.Attributes.OptionAttribute.#ctor(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="section">配置文件中的 Section 路径</param>
+        </member>
+        <member name="T:RefaceCore.Modularization.Attributes.RegisterAsAttribute">
+            <summary>
+            自动注册
+            </summary>
+        </member>
+        <member name="P:RefaceCore.Modularization.Attributes.RegisterAsAttribute.ServiceType">
+            <summary>
+            注册到哪个类型上
+            </summary>
+        </member>
+        <member name="P:RefaceCore.Modularization.Attributes.RegisterAsAttribute.ServiceLifetime">
+            <summary>
+            生命周期
+            </summary>
+        </member>
+        <member name="M:RefaceCore.Modularization.Attributes.RegisterAsAttribute.#ctor(System.Type,Microsoft.Extensions.DependencyInjection.ServiceLifetime)">
+            <summary>
+            
+            </summary>
+            <param name="serviceType">注册到的类型</param>
+            <param name="serviceLifetime">生命周期</param>
+        </member>
+        <member name="T:RefaceCore.Modularization.Attributes.ServiceAttribute">
+            <summary>
+            声明一个服务类型
+            </summary>
+        </member>
+        <member name="T:RefaceCore.Modularization.Attributes.ServiceLifetimeAttribute">
+            <summary>
+            生命周期
+            </summary>
+        </member>
+        <member name="T:RefaceCore.Modularization.Attributes.StartingToolAttribute">
+            <summary>
+            启动工具
+            </summary>
+        </member>
+        <member name="M:RefaceCore.Modularization.Attributes.StartingToolAttribute.#ctor(System.Type)">
+            <summary>
+            
+            </summary>
+            <param name="startingToolType">工具类型</param>
+        </member>
+        <member name="T:RefaceCore.Modularization.Attributes.UseModuleAttribute">
+            <summary>
+            使用子模块
+            </summary>
+        </member>
+        <member name="P:RefaceCore.Modularization.Attributes.UseModuleAttribute.ModuleType">
+            <summary>
+            子模块类型
+            </summary>
+        </member>
+        <member name="M:RefaceCore.Modularization.Attributes.UseModuleAttribute.#ctor(System.Type)">
+            <summary>
+            
+            </summary>
+            <param name="moduleType">子模块类型</param>
+        </member>
+        <member name="T:RefaceCore.Modularization.IModule">
+            <summary>
+            模块，模块可以依赖模块，而最终启动项只要启动一个模块即可
+            </summary>
+        </member>
+        <member name="M:RefaceCore.Modularization.IModule.OnStarting(RefaceCore.Modularization.IModuleStartingContext)">
+            <summary>
+            当模块被启动时
+            </summary>
+            <param name="context"></param>
+        </member>
+        <member name="T:RefaceCore.Modularization.IModuleStartingContext">
+            <summary>
+            模块启动上下文
+            </summary>
+        </member>
+        <member name="P:RefaceCore.Modularization.IModuleStartingContext.ModuleTypes">
+            <summary>
+            此次启动所有的 <see cref="T:RefaceCore.Modularization.IModule"/> 类型（去重）
+            </summary>
+        </member>
+        <member name="P:RefaceCore.Modularization.IModuleStartingContext.Modules">
+            <summary>
+            所有的模块实例
+            </summary>
+        </member>
+        <member name="P:RefaceCore.Modularization.IModuleStartingContext.Assemblies">
+            <summary>
+            此次启动所有 <see cref="T:RefaceCore.Modularization.IModule"/> 类型所在的程序员（去重）
+            </summary>
+        </member>
+        <member name="P:RefaceCore.Modularization.IModuleStartingContext.AllTypes">
+            <summary>
+            <see cref="P:RefaceCore.Modularization.IModuleStartingContext.Assemblies"/> 中的所有类型
+            </summary>
+        </member>
+        <member name="P:RefaceCore.Modularization.IModuleStartingContext.StartingToolsContainter">
+            <summary>
+            启动工具集合
+            </summary>
+        </member>
+        <member name="P:RefaceCore.Modularization.IModuleStartingContext.ServiceCollection">
+            <summary>
+            应用程序的 IOC 容器
+            </summary>
+        </member>
+        <member name="P:RefaceCore.Modularization.IModuleStartingContext.Configuration">
+            <summary>
+            配置
+            </summary>
+        </member>
+        <member name="T:RefaceCore.Modularization.IServiceFactory`1">
+            <summary>
+            服务工厂类，每次都会创建新的服务实例
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:RefaceCore.Modularization.IServiceFactory`1.Create">
+            <summary>
+            创建实例
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:RefaceCore.Modularization.IServiceRegistion`1">
+            <summary>
+            单独的服务注册器，该类型会将 <typeparamref name="TService"/> 注册到 IOC 容器中。
+            
+            为你的实现类添加 <see cref="T:RefaceCore.Modularization.Attributes.ServiceLifetimeAttribute"/> 可以指定注册时的生命周期
+            </summary>
+            <typeparam name="TService">注册到 IOC 容器中的类型</typeparam>
+        </member>
+        <member name="M:RefaceCore.Modularization.IServiceRegistion`1.Create(System.IServiceProvider)">
+            <summary>
+            创建服务的过程
+            </summary>
+            <param name="serviceProvider">应用程序的 IOC 容器</param>
+            <returns></returns>
+        </member>
+        <member name="T:RefaceCore.Modularization.ModuleStarter">
+            <summary>
+            模块启动器
+            </summary>
+        </member>
+        <member name="M:RefaceCore.Modularization.ModuleStarter.Start``1(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            启动一个模块，以及它所使用的所有模块
+            </summary>
+            <typeparam name="T">模块</typeparam>
+            <param name="services">IOC 注册容器</param>
+            <param name="configuration">配置信息</param>
+        </member>
+        <member name="M:RefaceCore.Modularization.ModuleStarter.Start``1(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            不借助外部的 <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> 启动所有模块
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="configuration"></param>
+            <returns><see cref="T:System.IServiceProvider"/> 的实例</returns>
+        </member>
+        <member name="T:RefaceCore.Modularization.Modules.AopModule">
+            <summary>
+            切面模块，添加此模块将会自动为具备 <see cref="T:RefaceCore.Modularization.Attributes.AopAttribute"/> 的类型添加切面功能
+            </summary>
+        </member>
+        <member name="T:RefaceCore.Modularization.Modules.EnhancerModule">
+            <summary>
+            增加模块
+            </summary>
+        </member>
+        <member name="T:RefaceCore.Modularization.ScannerModule">
+            <summary>
+            扫描模块
+            </summary>
+        </member>
+        <member name="T:RefaceCore.Modularization.StartingTools.ComponentRegistions.IComponentRegistion">
+            <summary>
+            组件注册器，该接口用于在 <see cref="M:RefaceCore.Modularization.ModuleStarter.Start``1(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)"/> 阶段中，
+            对组件进行发现与注册。
+            
+            你需要为你的实现类添加 <see cref="T:RefaceCore.Modularization.Attributes.StartingToolAttribute"/> 特征，以便框架能够发现该工具
+            </summary>
+        </member>
+        <member name="M:RefaceCore.Modularization.StartingTools.ComponentRegistions.IComponentRegistion.OnTypeScanned(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Type)">
+            <summary>
+            当类型被扫描到时的回调方法
+            </summary>
+            <param name="services">IOC 容器注册器</param>
+            <param name="type">扫描到的类型</param>
+        </member>
+    </members>
+</doc>

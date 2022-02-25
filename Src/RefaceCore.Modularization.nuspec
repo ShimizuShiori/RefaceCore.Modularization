@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package >
+  <metadata>
+    <id>RefaceCore.Modularization</id>
+    <version>2.0.0</version>
+    <title>RefaceCore.Modularization</title>
+    <authors>Felix</authors>
+    <description>
+模块化启动器
+在启动模块中定义一个 IModule 实现类，然后使用 ModuleStarter.Start 即可启动。
+内置功能：
+    1、组件的自动发现与注册
+    2、Option 的自动发现与注册
+    3、自定义的启动工具项
+    4、动态实现接口
+    5、AOP 拦截器
+    </description>
+    <dependencies>
+      <dependency id="Microsoft.Extensions.Configuration.Abstractions" version="5.0.0" />
+      <dependency id="Microsoft.Extensions.DependencyInjection" version="5.0.2" />
+      <dependency id="Microsoft.Extensions.DependencyInjection.Abstractions" version="5.0.0" />
+      <dependency id="Microsoft.Extensions.Hosting.Abstractions" version="5.0.0" />
+      <dependency id="Microsoft.Extensions.Options.ConfigurationExtensions" version="5.0.0" />
+    </dependencies>
+  </metadata>
+    <files>
+      <file src="RefaceCore.Modularization.xml"></file>
+    </files>
+</package>
