@@ -1,21 +1,32 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using QuickStart;
+﻿using QuickStart;
 using QuickStart.Services;
-using RefaceCore.Modularization;
-using System;
+using RefaceCore.Modularization.Starters;
 
 namespace QuickStarter
 {
+
+
+    public class OnStarted : IOnStartedListener
+    {
+        private readonly IGreeting greeting;
+
+        public OnStarted(IGreeting greeting)
+        {
+            this.greeting = greeting;
+        }
+
+        void IOnStartedListener.OnStarted(object startArguments)
+        {
+            this.greeting.SayHello();
+        }
+    }
+
     class Program
     {
         static void Main(string[] args)
         {
-            IServiceProvider sp = ModuleStarter.Start<QuickStartModule>();
-
-            IGreeting greeting = sp.GetService<IGreeting>();
-            greeting.SayHello();
-
-            Console.ReadLine();
+            IAppStarter starter = new SimpleAppStarter<OnStarted>(startArguments: args);
+            starter.Start<QuickStartModule>();
         }
     }
 }
