@@ -12,7 +12,12 @@ And more the child modules have their own child modules .
 
 It will scann all the modules when Application is starting .
 
+**RefaceCore.Modularization** can not only ogranize modules and scan components , but also provide the following features :
+* Automaticlly map configurations to class Automaticlly
+* Easily define AOP
+* Easily define **DynamicImplementor**
 
+**DynamicImplementor** means you can use a *interface* without any implementor , **DynamicImplementor** like a filter , dynamically execute the process when you invoke any method on this *interface* .
 
 You could download this package from [Nuget](https://www.nuget.org/packages/RefaceCore.Modularization/) .
 
