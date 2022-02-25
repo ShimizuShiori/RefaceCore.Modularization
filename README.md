@@ -12,7 +12,8 @@ Even the child modules have their own child modules .
 
 It will scann all the modules when Application is starting .
 
-**RefaceCore.Modularization** can not only ogranize modules and scan components , but also provide the following features :
+**RefaceCore.Modularization** can not only ogranize modules , but also provide the following features :
+* Scan components and register thier to IOC-Container
 * Automaticlly map configurations to class Automaticlly
 * Easily define AOP
 * Easily define **DynamicImplementor**
