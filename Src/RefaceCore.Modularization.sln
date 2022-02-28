@@ -4,7 +4,13 @@ VisualStudioVersion = 16.0.30503.244
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RefaceCore.Modularization", "RefaceCore.Modularization.csproj", "{4EA05F3C-C86B-4B9F-8F79-F5EFF5FB250E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RefaceCore.Starters.ConsoleApp", "..\RefaceCore.ConsoleApp\RefaceCore.Starters.ConsoleApp.csproj", "{23C490B4-5975-4AAE-96BE-565DE69AD3BF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RefaceCore.Starters.ConsoleApp", "..\RefaceCore.ConsoleApp\RefaceCore.Starters.ConsoleApp.csproj", "{23C490B4-5975-4AAE-96BE-565DE69AD3BF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RefaceCore.Modularization.Tests", "..\RefaceCore.Modularization.Tests\RefaceCore.Modularization.Tests.csproj", "{67E0D372-3A6C-47FD-92FA-F8B59F8B7202}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "99 - Tests", "99 - Tests", "{37A688BC-4929-449B-9202-E081CDCF90AA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00 - Codes", "00 - Codes", "{5600D72B-055F-4640-A71B-DB32AB34718D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,9 +26,18 @@ Global
 		{23C490B4-5975-4AAE-96BE-565DE69AD3BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{23C490B4-5975-4AAE-96BE-565DE69AD3BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{23C490B4-5975-4AAE-96BE-565DE69AD3BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67E0D372-3A6C-47FD-92FA-F8B59F8B7202}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67E0D372-3A6C-47FD-92FA-F8B59F8B7202}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67E0D372-3A6C-47FD-92FA-F8B59F8B7202}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67E0D372-3A6C-47FD-92FA-F8B59F8B7202}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4EA05F3C-C86B-4B9F-8F79-F5EFF5FB250E} = {5600D72B-055F-4640-A71B-DB32AB34718D}
+		{23C490B4-5975-4AAE-96BE-565DE69AD3BF} = {5600D72B-055F-4640-A71B-DB32AB34718D}
+		{67E0D372-3A6C-47FD-92FA-F8B59F8B7202} = {37A688BC-4929-449B-9202-E081CDCF90AA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7531EF32-61FF-4A73-8BA1-544CD666DE93}
