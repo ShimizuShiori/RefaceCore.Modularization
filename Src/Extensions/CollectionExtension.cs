@@ -16,5 +16,11 @@ namespace RefaceCore.Modularization
             }
             return -1;
         }
+
+        public static void AddMany<T>(this ICollection<T> list, IEnumerable<T> items)
+        {
+            foreach (T item in items)
+                list.Add(item);
+        }
     }
 }

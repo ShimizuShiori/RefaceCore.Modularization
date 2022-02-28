@@ -1,18 +1,34 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using RefaceCore.Modularization.Starters;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using RefaceCore.Modularization.Attributes;
+using RefaceCore.Modularization.Tests;
 
 namespace RefaceCore.Modularization.Starters.Tests
 {
     [TestClass()]
     public class SimpleAppStarterTests
     {
-        [TestMethod()]
-        public void StartTest()
+        #region 测试类型
+
+        public interface IA { }
+
+        [RegisterAs(typeof(IA))]
+        public class A : IA { }
+
+        #endregion
+
+        public IA PA { get; set; }
+
+        [TestInitialize]
+        public void OnInitialize()
         {
-            Assert.Fail();
+            IAppStarter appStarter = new UnitTestStarter(this);
+            appStarter.Start<TestModule>();
+        }
+
+        [TestMethod]
+        public void PAIsIA()
+        {
+            Assert.IsInstanceOfType(this.PA, typeof(IA));
         }
     }
 }
