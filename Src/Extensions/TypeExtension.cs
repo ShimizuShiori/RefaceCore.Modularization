@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 
 namespace RefaceCore.Modularization
 {
@@ -25,6 +27,17 @@ namespace RefaceCore.Modularization
                 result.Add(_type);
             } while (_type != TYPE_OBJ);
             return result;
+        }
+
+        public static bool HasCustomAttribute<T>(this Type type) where T : Attribute
+        {
+            return type.GetCustomAttributes<T>().Any();
+        }
+
+        public static T GetCustomAttribute<T>(this Type type) where T : Attribute
+        {
+            IEnumerable<T> attrs = type.GetCustomAttributes<T>();
+            return attrs.FirstOrDefault();
         }
     }
 }

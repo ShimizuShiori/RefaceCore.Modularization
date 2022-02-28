@@ -11,7 +11,7 @@ namespace RefaceCore.Modularization.Starters.Tests
 
         public interface IA { }
 
-        [RegisterAs(typeof(IA))]
+        [AutoRegister]
         public class A : IA { }
 
         #endregion
