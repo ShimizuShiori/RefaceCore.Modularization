@@ -27,5 +27,15 @@ namespace RefaceCore.Modularization
             foreach (T item in items)
                 list.Add(item);
         }
+
+        public static IDictionary<TKey, TValue> ToMap<TItem, TKey, TValue>(this IEnumerable<TItem> list, Func<TItem, TKey> keySelector, Func<TItem, TValue> valueSelector)
+        {
+            IDictionary<TKey, TValue> result = new Dictionary<TKey, TValue>();
+            list.ForEach(item =>
+            {
+                result[keySelector(item)] = valueSelector(item);
+            });
+            return result;
+        }
     }
 }

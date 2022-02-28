@@ -2,12 +2,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
 
 namespace RefaceCore.Modularization.Events
 {
     public static class EventListenerHelper
     {
         private static Type TYPE_LISTENER = typeof(IEventListener<>);
+        private const string METHOD_NAME_HANDLE_EVENT = "HandleEvent";
 
         public static Type GetEventListenerType(Type eventDataType)
         {
@@ -27,10 +30,38 @@ namespace RefaceCore.Modularization.Events
             return sp.GetServices(listenerType);
         }
 
-        public static IEnumerable<object> GetAllListeners(IServiceProvider serviceProvider, Type eventDataType)
+        public static IDictionary<Type, IEnumerable<object>> GetAllListeners(IServiceProvider serviceProvider, Type eventDataType)
         {
             return GetAllEventDataType(eventDataType)
-                .SelectMany(type => GetListeners(serviceProvider, type));
+                .ToMap(
+                    type => type,
+                    type => GetListeners(serviceProvider, type));
+        }
+
+        public static Delegate GetInvoker(Type listenerType, Type eventDataType)
+        {
+            MethodInfo methodInfo = listenerType.GetMethod(METHOD_NAME_HANDLE_EVENT);
+            Type delegateType = typeof(Func<,,>)
+                .MakeGenericType(listenerType, eventDataType, typeof(Task));
+            return methodInfo.CreateDelegate(delegateType);
+        }
+
+        public static Func<Task> GetProxiedInvoker(object listener, Type eventDataType, object eventData)
+        {
+            Delegate invoker = GetInvoker(listener.GetType(), eventDataType);
+            return new Func<Task>(() =>
+            {
+                return EventListenerHelper.InvokeListener(
+                    invoker,
+                    listener,
+                    eventData
+                );
+            });
+        }
+
+        public static Task InvokeListener(Delegate invoker, object listener, object eventData)
+        {
+            return (Task)invoker.DynamicInvoke(listener, eventData);
         }
     }
 }

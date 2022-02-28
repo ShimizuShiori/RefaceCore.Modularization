@@ -1,4 +1,4 @@
-﻿using RefaceCore.Modularization.Events;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RefaceCore.Modularization.Attributes;
 using RefaceCore.Modularization.Starters;
@@ -6,6 +6,7 @@ using RefaceCore.Modularization.Tests;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace RefaceCore.Modularization.Events.Tests
@@ -27,7 +28,10 @@ namespace RefaceCore.Modularization.Events.Tests
         public interface IA { }
         public interface IB { }
         public interface IC { }
-        public class D { }
+        public class D
+        {
+            public int I { get; set; } = 0;
+        }
 
         public class OnE : D, IA, IB, IC { }
 
@@ -54,16 +58,16 @@ namespace RefaceCore.Modularization.Events.Tests
         {
             public Task HandleEvent(object data)
             {
-                throw new NotImplementedException();
+                return Task.CompletedTask;
             }
         }
 
         [RegisterAs(typeof(IEventListener<D>))]
         public class OnD : IEventListener<D>
         {
-            public Task HandleEvent(D data)
+            public async Task HandleEvent(D data)
             {
-                throw new NotImplementedException();
+                await Task.Run(() => data.I = 100);
             }
         }
 
@@ -103,8 +107,39 @@ namespace RefaceCore.Modularization.Events.Tests
         [TestMethod()]
         public void GetAllListenersTest()
         {
-            IEnumerable<object> listeners = EventListenerHelper.GetAllListeners(this.ServiceProvider, typeof(OnE));
-            Assert.AreEqual(4, listeners.Count());
+            IDictionary<Type, IEnumerable<object>> listeners = EventListenerHelper.GetAllListeners(this.ServiceProvider, typeof(OnE));
+            Assert.AreEqual(6, listeners.Count());
+            Assert.AreEqual(1, listeners[typeof(IA)].Count());
+            Assert.AreEqual(1, listeners[typeof(IB)].Count());
+            Assert.AreEqual(0, listeners[typeof(IC)].Count());
+            Assert.AreEqual(1, listeners[typeof(D)].Count());
+            Assert.AreEqual(1, listeners[typeof(object)].Count());
+        }
+
+        [TestMethod()]
+        public async Task InvokeListenerTestAsync()
+        {
+            Delegate del = EventListenerHelper.GetInvoker(typeof(OnD), typeof(D));
+            D d = new D();
+            Console.WriteLine(Thread.CurrentThread.ManagedThreadId);
+            await EventListenerHelper.InvokeListener(del, new OnD(), d);
+            Console.WriteLine(Thread.CurrentThread.ManagedThreadId);
+            Assert.AreEqual(100, d.I);
+        }
+
+        [TestMethod()]
+        public async Task GetProxiedInvokerTestAsync()
+        {
+            Delegate del = EventListenerHelper.GetInvoker(typeof(OnD), typeof(D));
+            D d = new D();
+            IEventListener<D> ond = ServiceProvider.GetService<IEventListener<D>>();
+            Func<Task> func = EventListenerHelper.GetProxiedInvoker(
+                ond,
+                typeof(D),
+                d
+            );
+            await func();
+            Assert.AreEqual(100, d.I);
         }
     }
 }

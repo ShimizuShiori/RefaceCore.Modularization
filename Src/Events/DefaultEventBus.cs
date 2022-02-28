@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using RefaceCore.Modularization.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -8,6 +8,7 @@ namespace RefaceCore.Modularization.Events
     /// <summary>
     /// 默认实现
     /// </summary>
+    [RegisterAs(typeof(IEventBus))]
     public class DefaultEventBus : IEventBus
     {
         private readonly IServiceProvider serviceProvider;
@@ -17,21 +18,25 @@ namespace RefaceCore.Modularization.Events
             this.serviceProvider = serviceProvider;
         }
 
-        public Task Publish(object eventData)
+        public async Task Publish(object eventData)
         {
-            Type eventDataType = eventData.GetType();
-            Type[] allInterfaces = eventDataType.GetInterfaces();
-            IEnumerable<Type> allBaseType = eventDataType.GetAllBaseTypes();
+            IDictionary<Type, IEnumerable<object>> listeners = EventListenerHelper.GetAllListeners(this.serviceProvider, eventData.GetType());
 
-            ICollection<object> listeners = new List<object>();
-            foreach (Type interfaceType in allInterfaces)
+            ICollection<Func<Task>> invokers = new List<Func<Task>>();
+            foreach (var item in listeners)
             {
-                Type listenerType = typeof(IEventListener<>)
-                    .MakeGenericType(interfaceType);
-                listeners.AddMany(serviceProvider.GetServices(interfaceType));
+                foreach (var listner in item.Value)
+                {
+                    Func<Task> invoker = EventListenerHelper.GetProxiedInvoker(
+                        listner,
+                        item.Key,
+                        eventData
+                    );
+                    invokers.Add(invoker);
+                }
             }
-
-            throw new NotImplementedException();
+            foreach (var invoker in invokers)
+                await invoker();
         }
     }
 }
